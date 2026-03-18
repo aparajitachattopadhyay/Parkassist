@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>ParkAssist</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="rotate-msg">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    Rotate to landscape
+  </div>
+
+  <div id="app">
+    <header>
+      <span class="logo">Park<span>Assist</span></span>
+      <span class="pill" id="pill-sensor"><span class="dot"></span> Sensor</span>
+      <span class="pill" id="pill-cam"><span class="dot"></span> Camera</span>
+      <span class="pill" id="pill-ai"><span class="dot"></span> AI</span>
+      <span class="header-right">
+        <span id="clock">--:--:--</span>
+        <span id="fps">-- fps</span>
+      </span>
+    </header>
+
+    <div class="camera-wrap">
+      <div class="camera-placeholder" id="cam-placeholder">Connecting to camera…</div>
+      <img id="cam-img" alt="Camera">
+      <canvas id="overlay"></canvas>
+      <span class="live-badge" id="live-badge">LIVE</span>
+    </div>
+
+    <aside class="sidebar">
+      <div class="block">
+        <div class="block-title">Distance</div>
+        <div class="distance-row">
+          <span class="distance-label">Dist</span>
+          <div class="distance-bar-wrap"><div class="distance-bar" id="bar-final" style="width:0%;background:var(--muted)"></div></div>
+          <span class="distance-val" id="val-final">-- cm</span>
+        </div>
+        <div class="angle-row">
+          <span class="distance-label">Angle</span>
+          <div class="angle-bar-wrap"><div class="angle-needle" id="angle-needle"></div></div>
+          <span class="angle-val" id="angle-val">0°</span>
+        </div>
+      </div>
+
+      <div class="block" style="flex: 1; display: flex; flex-direction: column;">
+        <div class="block-title">Top view & AI Mapping</div>
+        <div class="map-wrap" style="flex:1;">
+          <canvas id="topview-canvas" width="360" height="300"></canvas>
+        </div>
+      </div>
+
+      <div class="log-wrap">
+        <div class="block-title">Events</div>
+        <div id="event-log"></div>
+      </div>
+
+      <div class="closest-strip">
+        <span class="closest-label">Closest</span>
+        <span class="closest-value" id="closest-val">--</span>
+        <span class="closest-unit">cm</span>
+        <span class="threat" id="threat">--</span>
+      </div>
+    </aside>
+
+    <footer>
+      <span>WS: <span id="ws-status">--</span></span>
+      <span>Objects: <span id="obj-count">0</span></span>
+      <span class="device" id="device-addr"></span>
+    </footer>
+  </div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
