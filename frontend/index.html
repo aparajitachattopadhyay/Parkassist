@@ -4,61 +4,125 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <title>ParkAssist</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+  <!-- Rotate prompt (portrait mode only) -->
   <div id="rotate-msg">
-    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="12" y1="11" x2="12" y2="17"/>
+      <line x1="9" y1="14" x2="15" y2="14"/>
+    </svg>
     Rotate to landscape
   </div>
 
   <div id="app">
+    <!-- ───── HEADER ───── -->
     <header>
       <span class="logo">Park<span>Assist</span></span>
+
+      <!-- Status pills -->
       <span class="pill" id="pill-sensor"><span class="dot"></span> Sensor</span>
       <span class="pill" id="pill-cam"><span class="dot"></span> Camera</span>
       <span class="pill" id="pill-ai"><span class="dot"></span> AI</span>
+
+      <!-- Demo badge (shown only in demo mode) -->
+      <span class="demo-badge" id="demo-badge">DEMO</span>
+
       <span class="header-right">
         <span id="clock">--:--:--</span>
         <span id="fps">-- fps</span>
       </span>
     </header>
 
-    <div class="camera-wrap">
-      <div class="camera-placeholder" id="cam-placeholder">Connecting to camera…</div>
-      <img id="cam-img" alt="Camera">
+    <!-- ───── CAMERA / VIDEO PANEL ───── -->
+    <div class="camera-wrap" id="camera-wrap">
+
+      <!-- DEMO: looping video -->
+      <video id="demo-video" src="../backend/media/vdo.mp4"
+             loop muted playsinline autoplay>
+      </video>
+
+      <!-- LIVE: MJPEG img -->
+      <img id="cam-img" alt="Camera" style="display:none">
+
+      <!-- Detection bounding-box overlay -->
       <canvas id="overlay"></canvas>
+
+      <!-- Status text shown while connecting -->
+      <div class="camera-placeholder" id="cam-placeholder">
+        <div class="spinner"></div>
+        <span>Connecting to camera…</span>
+      </div>
+
+      <!-- LIVE / DEMO badge (top-centre) -->
       <span class="live-badge" id="live-badge">LIVE</span>
+
+      <!-- Scan-line overlay for aesthetics in demo -->
+      <div class="scanlines" id="scanlines"></div>
     </div>
 
+    <!-- ───── SIDE PANEL ───── -->
     <aside class="sidebar">
+
+      <!-- Distance & Angle block -->
       <div class="block">
         <div class="block-title">Distance</div>
+
         <div class="distance-row">
           <span class="distance-label">Dist</span>
-          <div class="distance-bar-wrap"><div class="distance-bar" id="bar-final" style="width:0%;background:var(--muted)"></div></div>
+          <div class="distance-bar-wrap">
+            <div class="distance-bar" id="bar-final" style="width:0%;background:var(--muted)"></div>
+          </div>
           <span class="distance-val" id="val-final">-- cm</span>
         </div>
+
         <div class="angle-row">
           <span class="distance-label">Angle</span>
-          <div class="angle-bar-wrap"><div class="angle-needle" id="angle-needle"></div></div>
+          <div class="angle-bar-wrap">
+            <div class="angle-needle" id="angle-needle"></div>
+          </div>
           <span class="angle-val" id="angle-val">0°</span>
         </div>
       </div>
 
-      <div class="block" style="flex: 1; display: flex; flex-direction: column;">
-        <div class="block-title">Top view & AI Mapping</div>
-        <div class="map-wrap" style="flex:1;">
-          <canvas id="topview-canvas" width="360" height="300"></canvas>
+      <!-- Sensor readings block -->
+      <div class="block" id="sensor-block">
+        <div class="block-title">Sensors</div>
+        <div class="sensor-grid">
+          <div class="sensor-item">
+            <div class="sensor-name">US Left</div>
+            <div class="sensor-val" id="sv-usL">-- cm</div>
+            <div class="sensor-bar-wrap"><div class="sensor-bar" id="sb-usL"></div></div>
+          </div>
+          <div class="sensor-item">
+            <div class="sensor-name">US Right</div>
+            <div class="sensor-val" id="sv-usR">-- cm</div>
+            <div class="sensor-bar-wrap"><div class="sensor-bar" id="sb-usR"></div></div>
+          </div>
         </div>
       </div>
 
+      <!-- Top-view canvas -->
+      <div class="block" style="flex:1; display:flex; flex-direction:column;">
+        <div class="block-title">Top View &amp; AI Mapping</div>
+        <div class="map-wrap" style="flex:1;">
+          <canvas id="topview-canvas" width="360" height="260"></canvas>
+        </div>
+      </div>
+
+      <!-- Event log -->
       <div class="log-wrap">
         <div class="block-title">Events</div>
         <div id="event-log"></div>
       </div>
 
+      <!-- Closest strip -->
       <div class="closest-strip">
         <span class="closest-label">Closest</span>
         <span class="closest-value" id="closest-val">--</span>
@@ -67,14 +131,15 @@
       </div>
     </aside>
 
+    <!-- ───── FOOTER ───── -->
     <footer>
       <span>WS: <span id="ws-status">--</span></span>
       <span>Objects: <span id="obj-count">0</span></span>
+      <span id="mode-label" style="font-weight:600; color:var(--warn)">DEMO MODE</span>
       <span class="device" id="device-addr"></span>
     </footer>
   </div>
 
-<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
 </html>
