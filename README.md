@@ -18,6 +18,7 @@ The dashboard runs in a phone browser (landscape UI). In normal hardware mode, *
 
 - Dashboard UI: `gallery/frontend.png`
 - Hardware photos: `gallery/hardware.jpeg`, `gallery/hardware2.jpeg`
+- - YouTube demo video: https://youtu.be/RprVM_lP-LA
 
 ---
 
